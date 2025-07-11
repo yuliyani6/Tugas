@@ -1,0 +1,65 @@
+name: Automation CI for API and Web UI
+
+on:
+  push:
+    branches:
+      - ''
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  api-tests:
+    name: Run API Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run API tests
+        run: npm test
+
+      - name: Upload API Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-results
+          path: ./api/test-results/
+
+  web-ui-tests:
+    name: Run Web UI Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web-ui
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Web UI tests
+        run: npm test
+
+      - name: Upload Web UI Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-ui-test-results
+          path: ./web-ui/test-results/
