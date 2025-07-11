@@ -2,12 +2,11 @@ name: Automation CI for API and Web UI
 
 on:
   push:
-    branches:
-      - ''
+    branches: [main]
   pull_request:
     types: [closed]
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   api-tests:
